@@ -27,7 +27,7 @@ if __name__ == "__main__":
             listen="0.0.0.0",
             port=PORT,
             url_path=TOKEN,
-            webhook_url=f"https://skeemans-cafe-telegram-bot.herokuapp.com/{TOKEN}",
+            webhook_url=f"https://cryptic-beyond-88609-102fdbf67104.herokuapp.com/{TOKEN}",
         )
     else:
         application.run_polling()
