@@ -1,5 +1,5 @@
-from enum import auto, IntEnum
 import os
+from enum import auto, IntEnum
 
 import emoji
 from dotenv import load_dotenv
@@ -93,7 +93,12 @@ async def get_amount_of_money(update: Update, context: ContextTypes.DEFAULT_TYPE
     context.user_data["payment_method"] = update.callback_query.data
     # save clients payment method & get amount of money
     message = Message(update=update, context=context)
+
     if update.callback_query.data in CARD:
+        payment_message = Message(update=update, context=context)
+        payment_message.add("Номер карти для оплати покупки: ", formatters=[escape])
+        await payment_message.send()
+
         message.add(BANK_LINK, formatters=[escape])
     else:
         message.add(f"Покладіть готівку у касу будь ласка! {MONEY_BAG}", formatters=[escape])
