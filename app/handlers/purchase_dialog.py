@@ -16,7 +16,7 @@ from app.message import Message, escape
 from app.save_data import save_client_data_to_google_sheet
 
 load_dotenv()
-PAYMENT_LINK = os.getenv("BANK_LINK")
+PAYMENT_LINK = os.getenv("PAYMENT_LINK")
 CARD_NUMBER = os.getenv("CARD_NUMBER")
 
 # callbacks_id
