@@ -15,7 +15,9 @@ def get_order_datetime() -> str:
     return datetime.now(ZoneInfo("Europe/Kiev")).strftime("%H:%M %d-%m-%Y")
 
 
-google_client = gspread.service_account_from_dict(json.loads(os.getenv("GOOGLE_SHEET_CREDENTIALS")))
+google_client = gspread.service_account_from_dict(
+    json.loads(os.getenv("GOOGLE_SHEET_CREDENTIALS"))
+)
 sheet = google_client.open("Skeemans Cafe таблиця самопокупок")
 work_sheet = sheet.worksheet("Аркуш1")
 

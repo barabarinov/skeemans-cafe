@@ -33,10 +33,18 @@ class Message:
         self._parse_mode = parse_mode
         self._photo_path: str | None = None
         self._parts: list[str] = []
-        self._reply_keyboard: list[list[str | KeyboardButton | InlineKeyboardButton]] = []
+        self._reply_keyboard: list[
+            list[str | KeyboardButton | InlineKeyboardButton]
+        ] = []
         self._reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | None = None
 
-    def add(self, message: str, *args: Any, formatters: FORMATTERS | None = None, **kwargs: Any) -> Self:
+    def add(
+        self,
+        message: str,
+        *args: Any,
+        formatters: FORMATTERS | None = None,
+        **kwargs: Any,
+    ) -> Self:
         formatters = formatters or []
         formatted_message = message.format(*args, **kwargs)
         for formatter in formatters:
@@ -45,10 +53,24 @@ class Message:
 
         return self
 
-    def add_title(self, title: str, *args: Any, formatters: FORMATTERS | None = None, **kwargs: Any) -> Self:
-        return self.add(title, *args, formatters=[escape, bold] + (formatters or []), **kwargs).add_newline()
+    def add_title(
+        self,
+        title: str,
+        *args: Any,
+        formatters: FORMATTERS | None = None,
+        **kwargs: Any,
+    ) -> Self:
+        return self.add(
+            title, *args, formatters=[escape, bold] + (formatters or []), **kwargs
+        ).add_newline()
 
-    def add_line(self, message: str, *args: Any, formatters: FORMATTERS | None = None, **kwargs: Any) -> Self:
+    def add_line(
+        self,
+        message: str,
+        *args: Any,
+        formatters: FORMATTERS | None = None,
+        **kwargs: Any,
+    ) -> Self:
         return self.add_newline().add(message, *args, formatters=formatters, **kwargs)
 
     def add_newline(self, number: int = 1) -> Self:
@@ -57,13 +79,15 @@ class Message:
         return self
 
     @staticmethod
-    def create_inline_button(text: str, callback_id: str | None = None, **kwargs) -> InlineKeyboardButton:
+    def create_inline_button(
+        text: str, callback_id: str | None = None, **kwargs
+    ) -> InlineKeyboardButton:
         return InlineKeyboardButton(
             text=text,
             callback_data=callback_id or text,
             **kwargs,
         )
-    
+
     def add_inline_buttons(self, *buttons: list[InlineKeyboardButton]) -> Self:
         for button in buttons:
             self._reply_keyboard.append(button)
@@ -74,10 +98,15 @@ class Message:
     def create_reply_button(text: str, **kwargs) -> KeyboardButton:
         return KeyboardButton(text=text, **kwargs)
 
-    def add_reply_buttons(self, *buttons: list[str | KeyboardButton], **keyboard_kwargs) -> Self:
+    def add_reply_buttons(
+        self, *buttons: list[str | KeyboardButton], **keyboard_kwargs
+    ) -> Self:
         for button_list in buttons:
             self._reply_keyboard.append(button_list)
-        self._reply_markup = ReplyKeyboardMarkup(self._reply_keyboard, **keyboard_kwargs)
+
+        self._reply_markup = ReplyKeyboardMarkup(
+            self._reply_keyboard, **keyboard_kwargs
+        )
         return self
 
     def reply_keyboard_remove(self) -> Self:
@@ -129,9 +158,13 @@ class Message:
         except (telegram.error.BadRequest, telegram.error.Forbidden):
             logger.info(f"User {user.first_name} {user.id} blocked")
         else:
-            logger.info(f"Bot sent message to User={user.first_name} with id={user.id}")
+            logger.info(
+                f"Bot sent message to User={user.first_name} with id={user.id}"
+            )
 
-    async def edit_message_caption(self, message: TelegramMessage, new_caption: list[str]) -> None:
+    async def edit_message_caption(
+        self, message: TelegramMessage, new_caption: list[str]
+    ) -> None:
         await self._context.bot.edit_message_caption(
             chat_id=message.chat.id,
             message_id=message.message_id,
@@ -204,6 +237,8 @@ def spoiler(s: str) -> str:
 
 
 class MemberMessage(Message):
-    def edit_message_prayer_need(self, message: TelegramMessage, new_caption: str):
+    def edit_message_prayer_need(
+            self, message: TelegramMessage, new_caption: str
+    ) -> None:
         self._parts[-1] = new_caption
         self.edit_message_caption(message, self._parts)
