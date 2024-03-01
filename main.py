@@ -18,7 +18,6 @@ if __name__ == "__main__":
     IS_HEROKU = os.getenv("IS_HEROKU", "true").lower() == "true"
     PORT = int(os.environ.get("PORT", 5000))
     TOKEN = os.getenv("TOKEN")
-    APP_URL = os.getenv("APP_URL")
 
     application = ApplicationBuilder().token(TOKEN).build()
 
@@ -33,7 +32,7 @@ if __name__ == "__main__":
             listen="0.0.0.0",
             port=PORT,
             url_path=TOKEN,
-            webhook_url=f"{APP_URL}{TOKEN}",
+            webhook_url=f"https://skeemans-cafe-telegram-bot-c181abfcfd34.herokuapp.com/{TOKEN}",
         )
     else:
         application.run_polling()
